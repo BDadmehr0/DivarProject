@@ -1,7 +1,8 @@
-import requests
 import json
-import time
 import os  # برای مدیریت فایل‌ها و پوشه‌ها
+import time
+
+import requests
 
 
 class DivarScraper:

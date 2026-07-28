@@ -1,6 +1,6 @@
-from pathlib import Path
-import shutil
 import hashlib
+import shutil
+from pathlib import Path
 
 
 class FileManager:
