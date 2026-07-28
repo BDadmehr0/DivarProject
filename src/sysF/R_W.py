@@ -1,7 +1,7 @@
-from pathlib import Path
+import os
 import platform
 from datetime import datetime
-import os
+from pathlib import Path
 
 
 class File:

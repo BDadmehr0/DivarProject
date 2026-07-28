@@ -1,6 +1,6 @@
-import requests
 import os
 
+import requests
 
 path = "C:/Users/ASUS/Desktop/DivarPrj/src/supplies/Links.txt"
 with open(path, "r") as f:
