@@ -1,4 +1,4 @@
-from utils.user_agents import get_random_user_agent
+from utils.user_agent.user_agents import get_random_user_agent
 
 headers = {
     "User-Agent": get_random_user_agent(
