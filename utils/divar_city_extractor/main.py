@@ -1,5 +1,5 @@
 import json
-import os  # برای مدیریت فایل‌ها و پوشه‌ها
+import os
 import time
 
 import requests
