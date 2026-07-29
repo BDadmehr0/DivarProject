@@ -1,0 +1,2 @@
+- install requerments.txt (flask)
+- run terminal 'flask --app main run'
