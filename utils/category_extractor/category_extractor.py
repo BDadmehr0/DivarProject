@@ -101,7 +101,7 @@ def main():
             try:
                 response = requests.post(
                     "https://api.divar.ir/v8/postlist/w/filters",
-                    cookies=cookies,
+                    cookies=COOKIES,
                     headers=headers,
                     json=json_builder(i),
                 )
