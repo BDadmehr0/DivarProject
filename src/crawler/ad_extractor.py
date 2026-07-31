@@ -1,7 +1,10 @@
-import requests
-import json
 import csv
+import json
 import os
+
+import requests
+
+from utils.cookies import get_cookies
 
 CSV_FILE = "clean_ads.csv"
 
@@ -10,10 +13,7 @@ HEADERS = {
     "Accept": "application/json",
 }
 
-COOKIES = {
-    "did": "b030689c-3d42-4a2e-a811-883e88c9c422",
-    "cdid": "ac500cf5-e04b-4cb9-aa5b-d86d098e1db9",
-}
+COOKIES = get_cookies()
 
 agency_keywords = [
     # مستقیم
@@ -27,7 +27,6 @@ agency_keywords = [
     "کارشناس منطقه",
     "مشاور",
     "مشاورین",
-
     # عبارت‌های رایج مشاورها
     "فایل",
     "فایلینگ",
@@ -36,7 +35,6 @@ agency_keywords = [
     "فایل اکازیون",
     "فایل فروش",
     "فایل اجاره",
-
     # همکاری و تبلیغات بنگاهی
     "همکار تماس نگیرد",
     "همکار تماس نگیره",
@@ -44,7 +42,6 @@ agency_keywords = [
     "با مشاورین همکاری نمی‌شود",
     "بدون واسطه",
     "بدون واسطه نیست",
-
     # جملات رایج آگهی‌گذارها
     "جهت بازدید تماس",
     "جهت اطلاعات بیشتر تماس",
@@ -52,7 +49,6 @@ agency_keywords = [
     "برای بازدید تماس بگیرید",
     "مشاور فروش",
     "مشاور شما",
-
     # نام‌گذاری دفترها
     "گروه املاک",
     "مجموعه املاک",
@@ -61,15 +57,15 @@ agency_keywords = [
     "معاملات ملکی",
     "کارگزاری",
     "دفتر ملکی",
-
     # شماره و معرفی کارشناس
     "کارشناس:",
     "مشاور:",
     "مدیر فروش",
     "مدیر منطقه",
     "جهت اطلاعات بیشتر و هماهنگی بازدید تماس بگیرید.",
-    "موارد دیگر متناسب با بودجه شما"
+    "موارد دیگر متناسب با بودجه شما",
 ]
+
 
 def build_url(token, ad_instance_id):
     return f"https://api.divar.ir/v8/posts-v2/web/{token}?tracker_session_id={ad_instance_id}"
@@ -86,11 +82,7 @@ def extract_widgets(data):
 
 
 def extract_post_info(widget):
-    payload = (
-        widget.get("data", {})
-        .get("action", {})
-        .get("payload", {})
-    )
+    payload = widget.get("data", {}).get("action", {}).get("payload", {})
     token = payload.get("token")
     ad_instance_id = payload.get("ad_instance_id")
     return token, ad_instance_id
@@ -143,6 +135,7 @@ def main(response_file):
         web_url = ad_data.get("share", {}).get("web_url", "")
         save_to_csv([token, ad_instance_id, web_url, text])
         print(f"[{idx}] saved")
+
 
 if __name__ == "__main__":
     main("response_1.json")

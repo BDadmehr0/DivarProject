@@ -6,9 +6,7 @@ from pathlib import Path
 
 class FieldExtractor:
 
-    def __init__(self,
-                 input_dir="Divar_filters",
-                 output_dir="Parsed_filters"):
+    def __init__(self, input_dir="Divar_filters", output_dir="Parsed_filters"):
 
         self.input_dir = Path(input_dir)
         self.output_dir = Path(output_dir)
@@ -36,10 +34,7 @@ class FieldExtractor:
 
         widgets = data.get("page", {}).get("widget_list", [])
 
-        schema = {
-            "category": category_name,
-            "filters": {}
-        }
+        schema = {"category": category_name, "filters": {}}
 
         rows = []
 
@@ -77,57 +72,51 @@ class FieldExtractor:
                 "field_type": field_type,
                 "title": title,
                 "placeholder": placeholder,
-                "data": d
+                "data": d,
             }
 
             if options:
 
                 for option in options:
 
-                    rows.append({
+                    rows.append(
+                        {
+                            "field": field_key,
+                            "widget_type": widget_type,
+                            "field_type": field_type,
+                            "title": title,
+                            "option_key": option.get("key") or option.get("value"),
+                            "option_title": option.get("title")
+                            or option.get("display"),
+                            "search_keywords": option.get("search_keywords", ""),
+                        }
+                    )
+
+            else:
+
+                rows.append(
+                    {
                         "field": field_key,
                         "widget_type": widget_type,
                         "field_type": field_type,
                         "title": title,
-                        "option_key": option.get("key") or option.get("value"),
-                        "option_title": option.get("title") or option.get("display"),
-                        "search_keywords": option.get("search_keywords", "")
-                    })
+                        "option_key": "",
+                        "option_title": "",
+                        "search_keywords": "",
+                    }
+                )
 
-            else:
+        with open(category_dir / "schema.json", "w", encoding="utf-8") as f:
 
-                rows.append({
-                    "field": field_key,
-                    "widget_type": widget_type,
-                    "field_type": field_type,
-                    "title": title,
-                    "option_key": "",
-                    "option_title": "",
-                    "search_keywords": ""
-                })
-
-        with open(category_dir / "schema.json",
-                  "w",
-                  encoding="utf-8") as f:
-
-            json.dump(
-                schema,
-                f,
-                ensure_ascii=False,
-                indent=4
-            )
+            json.dump(schema, f, ensure_ascii=False, indent=4)
 
         if rows:
 
-            with open(category_dir / "filters.csv",
-                      "w",
-                      newline="",
-                      encoding="utf-8-sig") as f:
+            with open(
+                category_dir / "filters.csv", "w", newline="", encoding="utf-8-sig"
+            ) as f:
 
-                writer = csv.DictWriter(
-                    f,
-                    fieldnames=rows[0].keys()
-                )
+                writer = csv.DictWriter(f, fieldnames=rows[0].keys())
 
                 writer.writeheader()
                 writer.writerows(rows)

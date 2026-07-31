@@ -3,19 +3,9 @@ import time
 
 import requests
 
-cookies = {
-    "did": "b030689c-3d42-4a2e-a811-883e88c9c422",
-    "cdid": "ac500cf5-e04b-4cb9-aa5b-d86d098e1db9",
-    "multi-city": "tehran%7C",
-    "city": "tehran",
-    "csid": "",
-    "theme": "dark",
-    "sFrontToken": "",
-    "_vid_t": "lI1kh4kmMZhOyWQWs5Fw940BZEuBPpZNgPMyHwXE89D4qPy6UgTxYSEpIHkM4ambqBrx6eIOvj2qHg==",
-    "token": "",
-    "referrer": "",
-    "ff": "%7B%22f%22%3A%7B%22foreigner_payment_enabled%22%3Atrue%2C%22enable_filter_post_count_web%22%3Atrue%2C%22device_fp_enable%22%3Atrue%2C%22enable-places-selector-online-search-web%22%3Atrue%2C%22chat_message_disabled%22%3Atrue%2C%22web_sentry_sample_rate%22%3A0.2%2C%22web_sentry_traces_sample_rate%22%3A0.01%2C%22is_web_proactive_refresh_enabled%22%3Atrue%2C%22post-stats-batch-event-web-max-batch-size%22%3A%2220%22%2C%22post-stats-batch-event-web-flush-interval-sec%22%3A%2220%22%7D%2C%22e%22%3A1785206743985%2C%22r%22%3A1785289543985%7D",
-}
+from utils.cookies import get_cookies
+
+COOKIES = get_cookies()
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0",
@@ -83,7 +73,7 @@ def get_response(pagination_payload):
             "https://api.divar.ir/v8/postlist/w/search",
             headers=headers,
             json=json_data,
-            cookies=cookies,
+            cookies=COOKIES,
             timeout=10,
         )
         return response.json()
