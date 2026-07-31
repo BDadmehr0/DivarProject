@@ -2,25 +2,14 @@ import json
 import requests
 import time
 import os
+from field_extractor import FieldExtractor
+
+extract = FieldExtractor()
 
 directory_name = 'Divar_filters'
 cookies = {
     'did': '7593062c-bc1c-4fb2-980c-04f589d55d62',
     'cdid': '5bb7e4f6-17ef-4074-8a46-29a87912a805',
-    'multi-city': 'tehran%7C',
-    'city': 'tehran',
-    'theme': 'dark',
-    '_vid_t': 'rXcYTC0uvZ+dr6eUMD/J7UNBZ9E6TLA34oyJB25M1tWgsuAkuMuJ/e4/mIwHBtU/P/f731gogS9ozw==',
-    'referrer': '',
-    '_ga': 'GA1.1.847434863.1784358426',
-    '_ga_CCSRPLKB4B': 'GS2.1.s1784358425$o1$g1$t1784358518$j27$l0$h0',
-    'token': '',
-    'disable_map_view': 'true',
-    'csid': '549f3266832dbeb656',
-    'sAccessToken': 'eyJraWQiOiJkLTE3ODUwNjM0NjI2NTEiLCJ0eXAiOiJKV1QiLCJ2ZXJzaW9uIjoiNCIsImFsZyI6IlJTMjU2In0.eyJpYXQiOjE3ODU0NDgwNDIsImV4cCI6MTc4NTQ1ODg0Miwic3ViIjoiMjYyYjUzZmItMzVkMC00MzRhLWFjY2UtY2I1NTg5OTQ1MjNjIiwidElkIjoicHVibGljIiwic2Vzc2lvbkhhbmRsZSI6ImYzZjgzMzZiLTY0ZTEtNGY2Ni1iOGE4LWUyNmM3YWM0YzBiMCIsInJlZnJlc2hUb2tlbkhhc2gxIjoiMWFkNzY0MjM2YmJkODlhOTdhZDQ5ZWQ5NDA0NWQ1ZDgxNTBjZjE3MDA2NDZhNWI3NzRlYmMzZTA5Yzg3MzNiYiIsInBhcmVudFJlZnJlc2hUb2tlbkhhc2gxIjoiMTY0MGIxZWQzMzkwNmJhNWUwYmY2OWY1OWMxYmVkNjRmOWFmZjg2N2ZlZjM2NjAzMzdjZGNlYTI5ODI5YTEwMCIsImFudGlDc3JmVG9rZW4iOm51bGwsImlzcyI6Imh0dHBzOi8vYXBpLmRpdmFyLmlyL3Y4L2F1dGhlbnRpY2F0ZSIsInBob25lTnVtYmVyIjoiKzk4OTkzNDI2MjUwMiIsInN0LXBlcm0iOnsidCI6MTc4NTQ0ODA0MiwidiI6W119LCJzdC1yb2xlIjp7InQiOjE3ODU0NDgwNDIsInYiOltdfX0.gjOwqtC_qJynsiBB28mNBnx5FPDv9qwfibwxQ-qSQ-adyQfPR2qct-FzucNLD7tpClgtdFSwp91NB3I99PnKY1YliX9c4iMf5ioob3kZSmOA0GinUGYJW3XUz4EFJEJXprhJiue-vhsFVvYkCqe2zGa5178N5_b0DdhrwmQWeATjHRVbjdjWmmw7kHpVj6iw3vPGXIsFt4Mn35p9LP9-QMkzCRFohLB_y4xtbdmTQ8ADQkHN_vhAuKBEw9GnBC9wkwjQVaFs4FXgBO_un4xV_jaWg6nQtiQz4qDiSiaC1sA0McDfCPGd8gcWiuhhvZePzD0kBWwM1CcPxqaVSMLlhA',
-    'sFrontToken': 'eyJ1aWQiOiIyNjJiNTNmYi0zNWQwLTQzNGEtYWNjZS1jYjU1ODk5NDUyM2MiLCJhdGUiOjE3ODU0NTg4NDIwMDAsInVwIjp7ImFudGlDc3JmVG9rZW4iOm51bGwsImV4cCI6MTc4NTQ1ODg0MiwiaWF0IjoxNzg1NDQ4MDQyLCJpc3MiOiJodHRwczovL2FwaS5kaXZhci5pci92OC9hdXRoZW50aWNhdGUiLCJwYXJlbnRSZWZyZXNoVG9rZW5IYXNoMSI6IjE2NDBiMWVkMzM5MDZiYTVlMGJmNjlmNTljMWJlZDY0ZjlhZmY4NjdmZWYzNjYwMzM3Y2RjZWEyOTgyOWExMDAiLCJwaG9uZU51bWJlciI6Iis5ODk5MzQyNjI1MDIiLCJyZWZyZXNoVG9rZW5IYXNoMSI6IjFhZDc2NDIzNmJiZDg5YTk3YWQ0OWVkOTQwNDVkNWQ4MTUwY2YxNzAwNjQ2YTViNzc0ZWJjM2UwOWM4NzMzYmIiLCJzZXNzaW9uSGFuZGxlIjoiZjNmODMzNmItNjRlMS00ZjY2LWI4YTgtZTI2YzdhYzRjMGIwIiwic3QtcGVybSI6eyJ0IjoxNzg1NDQ4MDQyLCJ2IjpbXX0sInN0LXJvbGUiOnsidCI6MTc4NTQ0ODA0MiwidiI6W119LCJzdWIiOiIyNjJiNTNmYi0zNWQwLTQzNGEtYWNjZS1jYjU1ODk5NDUyM2MiLCJ0SWQiOiJwdWJsaWMifX0=',
-    'ff': '%7B%22f%22%3A%7B%22foreigner_payment_enabled%22%3Atrue%2C%22enable_filter_post_count_web%22%3Atrue%2C%22device_fp_enable%22%3Atrue%2C%22enable_shopping_journey%22%3Atrue%2C%22enable-places-selector-online-search-web%22%3Atrue%2C%22chat_message_disabled%22%3Atrue%2C%22web_sentry_sample_rate%22%3A0.2%2C%22web_sentry_traces_sample_rate%22%3A0.01%2C%22is_web_proactive_refresh_enabled%22%3Atrue%2C%22post-stats-batch-event-web-max-batch-size%22%3A%2220%22%2C%22post-stats-batch-event-web-flush-interval-sec%22%3A%2220%22%7D%2C%22e%22%3A1785451642401%2C%22r%22%3A1785534442401%7D',
-    'resolution_width': '955',
 }
 
 headers = {
@@ -75,7 +64,7 @@ def main():
         os.makedirs(directory_name, exist_ok=True) # این خط خطا را از بین می‌برد
     else:
         print(f'{directory_name} Folder Exists')
-    with open('categories.json', 'r', encoding='utf-8') as f:
+    with open('../categories.json', 'r', encoding='utf-8') as f:
         categories = json.load(f)
         for i in categories['category_values_to_slugs']:
             try:
@@ -97,6 +86,7 @@ def main():
             except requests.exceptions.ConnectionError as b:
                 print(f"{b} Connection Error")
                 break
+        extract.run()
 
 if __name__ == '__main__':
     main()
